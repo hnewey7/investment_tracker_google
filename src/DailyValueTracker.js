@@ -15,10 +15,22 @@ function daily_value_tracker() {
 
   if (valid_day) {
     Logger.log("Valid day of the week.")
+
     // Get current valuation.
     let current_value = get_current_valuation()
-    // Create new row.
-    create_new_row(investment_history, current_value, date)
+
+    Logger.log("Checking row already added...")
+    if (!check_row_added(investment_history, date)){
+        Logger.log("Row has not been added.")
+        // Create new row.
+        create_new_row(investment_history, current_value, date)
+    } else {
+        Logger.log("Row has already been added.")
+        // Update valuation.
+        update_current_valuation(investment_history, current_value)
+    }
+    
+    
   } else {
     Logger.log("Invalid day of the week.")
   }
@@ -32,6 +44,18 @@ function check_day_of_week(day) {
     } else {
         return true
     }
+}
+
+
+function check_row_added(spreadsheet, date) {
+    // Function for checking if row already added.
+    last_row_number = spreadsheet.getLastRow()
+    last_row_date_string = spreadsheet.getRange(`A${last_row_number}`).getValue()
+    last_row_date = new Date(last_row_date_string)
+
+    return date.getFullYear() === last_row_date.getFullYear() &&
+         date.getMonth() === last_row_date.getMonth() &&
+         date.getDate() === last_row_date.getDate();
 }
 
 
@@ -54,4 +78,11 @@ function create_new_row(spreadsheet, valuation, date) {
     contents.push(`=D${new_row_number}/C${new_row_number}`)
     // Add row.
     spreadsheet.appendRow(contents)
+}
+
+
+function update_current_valuation(spreadsheet, valuation) {
+    // Function for updating current valuation.
+    last_row_number = spreadsheet.getLastRow()
+    update_cell = spreadsheet.getRange(`B${last_row_number}`).setValue(valuation)
 }
