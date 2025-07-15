@@ -14,7 +14,7 @@ function buy_new_holding() {
         null,
         null,
         null,
-        null,
+        `=GOOGLEFINANCE(B${new_row_number}, "price") /100`,
         null,
         new Date(),
         null
