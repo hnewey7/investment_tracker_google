@@ -90,10 +90,10 @@ function add_previous_trade(spreadsheet, trade_details){
     ]
 
     // Add formulas.
-    contents.push(`=H${last_row}*F${last_row}`);
-    contents.push(`=(D${last_row}-F${last_row})/F${last_row}`);
-    contents.push(`=J${last_row}/(DAYS(E${last_row},G${last_row})/365)`);
-    contents.push(`=(D${last_row}-F${last_row})*H${last_row}`);
+    contents.push(`=H${last_row-1}*F${last_row-1}`);
+    contents.push(`=(D${last_row-1}-F${last_row-1})/F${last_row-1}`);
+    contents.push(`=J${last_row-1}/(DAYS(E${last_row-1},G${last_row-1})/365)`);
+    contents.push(`=(D${last_row-1}-F${last_row-1})*H${last_row-1}`);
 
     spreadsheet.appendRow(contents)
     const rowSpec = spreadsheet.getRange(`A${last_row+1}:L${last_row+1}`);
