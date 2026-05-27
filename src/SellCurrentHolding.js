@@ -86,16 +86,27 @@ function add_previous_trade(spreadsheet, trade_details){
         current_date,
         trade_details["buy_price"],
         trade_details["buy_date"],
-        trade_details["quantity"]
+        trade_details["quantity"],
+        null,
+        null,
+        null,
+        null
     ]
-
-    // Add formulas.
-    contents.push(`=H${last_row-1}*F${last_row-1}`);
-    contents.push(`=(D${last_row-1}-F${last_row-1})/F${last_row-1}`);
-    contents.push(`=J${last_row-1}/(DAYS(E${last_row-1},G${last_row-1})/365)`);
-    contents.push(`=(D${last_row-1}-F${last_row-1})*H${last_row-1}`);
 
     spreadsheet.appendRow(contents)
     const rowSpec = spreadsheet.getRange(`A${last_row+1}:L${last_row+1}`);
     spreadsheet.moveRows(rowSpec,last_row)
+
+    // Add formulas.
+    const formulaRange = spreadsheet.getRange(`A${last_row}:L${last_row}`);
+    formulaRange.getCell(1, 9).setValue(`=H${last_row}*F${last_row}`);
+    formulaRange.getCell(1, 10).setValue(`=(D${last_row}-F${last_row})/F${last_row}`);
+    formulaRange.getCell(1, 11).setValue(`=J${last_row}/(DAYS(E${last_row},G${last_row})/365)`);
+    formulaRange.getCell(1, 12).setValue(`=(D${last_row}-F${last_row})*H${last_row}`);
+
+    // contents.push(`=H${last_row}*F${last_row}`);
+    // contents.push(`=(D${last_row}-F${last_row})/F${last_row}`);
+    // contents.push(`=J${last_row}/(DAYS(E${last_row},G${last_row})/365)`);
+    // contents.push(`=(D${last_row}-F${last_row})*H${last_row}`);
+
 }
